@@ -8,19 +8,78 @@ namespace Pudełko
     {
 
         UnitOfMeasure miara { get; set; }
-        //private double A { get
-        //    set
-        //    {
-        //        ListaPo[0];
-        //private double B { get; set; }
-        //private double C { get; set; }
+        //Zaimplementuj properties o nazwach A, B i C zwracające wymiary pudełka w metrach(z dokładnością do 3 miejsc po przecinku).
+        private double _a;
+        private double _b;
+        private double _c;
+        public double A   
+        {
+            get { return _a; }
+            set
+            {
+                if (miara == UnitOfMeasure.meter)
+                { 
+               _a = Math.Round(value, 3); }
+                else if (miara == UnitOfMeasure.centimeter)
+                {
+                    
+                    _a = Math.Round((value *100), 3);
+                }
+                else if (miara == UnitOfMeasure.milimeter)
+                {
+                   
+                    _a = Math.Round((value * 1000), 3);
+                }
+            }
+        }
+        public double B
+        {
+            get { return _b; }
+            set
+            {
+                if (miara == UnitOfMeasure.meter)
+                {
+                    _b = Math.Round(value, 3);
+                }
+                else if (miara == UnitOfMeasure.centimeter)
+                {
+
+                    _b = Math.Round((value * 100), 3);
+                }
+                else if (miara == UnitOfMeasure.milimeter)
+                {
+
+                    _b = Math.Round((value * 1000), 3);
+                }
+            }
+        }
+        public double C
+        {
+            get { return _c; }
+            set
+            {
+                if (miara == UnitOfMeasure.meter)
+                {
+                    _c = Math.Round(value, 3);
+                }
+                else if (miara == UnitOfMeasure.centimeter)
+                {
+
+                    _c = Math.Round((value * 100), 3);
+                }
+                else if (miara == UnitOfMeasure.milimeter)
+                {
+
+                    _c = Math.Round((value * 1000), 3);
+                }
+            }
+        }
 
 
         private List<double> ListaPo = new List<double>();
 
         public Pudełko(List<double> lista = default(List<double>)/*null?*/, UnitOfMeasure u = UnitOfMeasure.meter)
         {
-            miara = u;
             foreach (double n in lista)
             {
                 //W przypadku próby utworzenia pudełka z którymkolwiek z parametrów niedodatnim, zgłaszany jest wyjątek ArgumentOutOfRangeException
@@ -101,7 +160,10 @@ namespace Pudełko
                     }
                 }
             }
-
+            _a = lista[0];
+            _b = lista[1];
+            _c = lista[2];
+            miara = u;
             ListaPo = lista;
         }
     }
