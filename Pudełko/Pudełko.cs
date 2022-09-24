@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace Pudełko
 {
-    public sealed class Pudełko
+    public sealed class Pudełko : IFormattable
     {
 
         UnitOfMeasure miara { get; set; }
@@ -12,22 +13,22 @@ namespace Pudełko
         private double _a;
         private double _b;
         private double _c;
-        public double A   
+        public double A
         {
             get { return _a; }
             set
             {
                 if (miara == UnitOfMeasure.meter)
-                { 
-               _a = Math.Round(value, 3); }
+                {
+                    _a = Math.Round(value, 3); }
                 else if (miara == UnitOfMeasure.centimeter)
                 {
-                    
-                    _a = Math.Round((value *100), 3);
+
+                    _a = Math.Round((value * 100), 3);
                 }
                 else if (miara == UnitOfMeasure.milimeter)
                 {
-                   
+
                     _a = Math.Round((value * 1000), 3);
                 }
             }
@@ -104,7 +105,8 @@ namespace Pudełko
             if (lista.Count < 3) //może być prościej ale nie wiem jak to kompetentnie zrobić/ bez błędu
             {
                 if (lista.Count == 0)
-                { if (u == UnitOfMeasure.milimeter)
+                {
+                    if (u == UnitOfMeasure.milimeter)
                     {
                         lista.Add(1000);
                         lista.Add(1000);
@@ -166,5 +168,38 @@ namespace Pudełko
             miara = u;
             ListaPo = lista;
         }
+
+
+//        Zapewnij reprezentację tekstową obiektu według formatu:
+//«liczba» «jednostka» × «liczba» «jednostka» × «liczba» «jednostka»
+//znak rozdzielający wymiary, to znak mnożenia × (Unicode: U+00D7, multiplication sign, times)
+//pomiędzy liczbami, nazwami jednostek miar i znakami × jest dokładnie jedna spacja
+//domyślne formatowanie liczb(przesłonięcie ToString()) w metrach, z dokładnością 3. miejsc po przecinku
+     public override string ToString()
+        {
+            return this.ToString("bez", CultureInfo.CurrentCulture);
+        }
+
+        public string ToString(string format, IFormatProvider provider)
+        {
+            if (String.IsNullOrEmpty(format)) format = "bez";
+            if (provider == null) provider = CultureInfo.CurrentCulture;
+
+            switch (format.ToUpperInvariant())
+            {
+                case "bez":
+                    return A.ToString("N3") + "m " + "× " + B.ToString("N3") + "m" + " ×" + C.ToString("N3") + " m";
+                case "m":
+                    return A.ToString("N3") + "m " + "× " + B.ToString("N3") + "m" + " ×" + C.ToString("N3") + " m";
+                case "cm":
+                    return A.ToString("N1") + "cm " + "× " + B.ToString("N1") + "cm" + " ×" + C.ToString("N1") + " cm";
+                case "mm":
+                    return A.ToString("N0") + "mm " + "× " + B.ToString("N0") + "mm" + " ×" + C.ToString("N0") + " mm";
+                default:
+                    throw new FormatException(String.Format("{0} to zły format", format));
+            }
+        }
+
     }
-}
+    }
+
