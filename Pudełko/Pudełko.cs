@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Pudełko
 {
-    public sealed class Pudełko //: IFormattable
+    public sealed class Pudełko : IFormattable
     {
 
         UnitOfMeasure miara { get; set; }
@@ -32,10 +32,7 @@ namespace Pudełko
                     _a = Math.Round((_a / 1000), 3);
                 }
                 return _a; }
-            set
-            {
-                ;
-            }
+           
         }
         public double B
         {
@@ -56,10 +53,6 @@ namespace Pudełko
                     _b = Math.Round((_b / 1000), 3);
                 }
                 return _b;
-            }
-            set
-            {
-                ;
             }
         
         }
@@ -84,13 +77,8 @@ namespace Pudełko
                 }
                 return _c;
             }
-            set
-            {
-                ;
-            }
         
         }
-
 
         private List<double> ListaPo = new List<double>();
 
@@ -191,30 +179,38 @@ namespace Pudełko
         //znak rozdzielający wymiary, to znak mnożenia × (Unicode: U+00D7, multiplication sign, times)
         //pomiędzy liczbami, nazwami jednostek miar i znakami × jest dokładnie jedna spacja
         //domyślne formatowanie liczb(przesłonięcie ToString()) w metrach, z dokładnością 3. miejsc po przecinku
-        //public override string ToString()
-        //{
-        //    return this.ToString("bez", CultureInfo.CurrentCulture);
-        //}
+       
 
-        //public string ToString(string format, IFormatProvider provider)
-        //{
-        //    if (String.IsNullOrEmpty(format)) format = "bez";
-        //    if (provider == null) provider = CultureInfo.CurrentCulture;
+        public string ToString(string format)
+        {
+            return this.ToString(format, CultureInfo.CurrentCulture);
+        }
 
-        //    switch (format.ToUpperInvariant())
-        //    {
-        //        case "bez":
-        //            return A.ToString("N3") + "m " + "× " + B.ToString("N3") + "m" + " ×" + C.ToString("N3") + " m";
-        //        case "m":
-        //            return A.ToString("N3") + "m " + "× " + B.ToString("N3") + "m" + " ×" + C.ToString("N3") + " m";
-        //        case "cm":
-        //            return A.ToString("N1") + "cm " + "× " + B.ToString("N1") + "cm" + " ×" + C.ToString("N1") + " cm";
-        //        case "mm":
-        //            return A.ToString("N0") + "mm " + "× " + B.ToString("N0") + "mm" + " ×" + C.ToString("N0") + " mm";
-        //        default:
-        //            throw new FormatException();
-        //    }
-        //}
+        public override string ToString()
+        {
+            
+            return this.ToString("G", CultureInfo.CurrentCulture);
+        }
+
+        public string ToString(string format, IFormatProvider provider)
+        {
+            if (String.IsNullOrEmpty(format)) format = "G";
+            if (provider == null) provider = CultureInfo.CurrentCulture;
+
+            switch (format.ToUpperInvariant())
+            {
+                case "G":
+                    return A.ToString("F3") + " m " + "× " + B.ToString("F3") + " m" + " × " + C.ToString("F3") + " m";
+                case "M":
+                    return A.ToString("F3") + " m " + "× " + B.ToString("F3") + " m" + " × " + C.ToString("F3") + " m";
+                case "CM":
+                    return A.ToString("F1") + " cm " + "× " + B.ToString("F1") + " cm" + " × " + C.ToString("F1") + " cm";
+                case "MM":
+                    return A.ToString("F0") + " mm " + "× " + B.ToString("F0") + " mm" + " ×" + C.ToString("F0") + " mm";
+                default:
+                    throw new FormatException();
+            }
+        }
         //Zaimplementuj property Objetosc zwracające objętość pudełka w m³. Wynik zaokrąglij(Math.Round) do 9. miejsc po przecinku.
         public double Objętość
         {
