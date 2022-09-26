@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Pudełko
 {
-    public sealed class Pudełko : IFormattable
+    public sealed class Pudełko //: IFormattable
     {
 
         UnitOfMeasure miara { get; set; }
@@ -15,65 +15,80 @@ namespace Pudełko
         private double _c;
         public double A
         {
-            get { return _a; }
-            set
+            get
             {
                 if (miara == UnitOfMeasure.meter)
                 {
-                    _a = Math.Round(value, 3); }
+                    _a = Math.Round(_a, 3);
+                }
                 else if (miara == UnitOfMeasure.centimeter)
                 {
 
-                    _a = Math.Round((value * 100), 3);
+                    _a = Math.Round((_a / 100), 3);
                 }
                 else if (miara == UnitOfMeasure.milimeter)
                 {
 
-                    _a = Math.Round((value * 1000), 3);
+                    _a = Math.Round((_a / 1000), 3);
                 }
+                return _a; }
+            set
+            {
+                ;
             }
         }
         public double B
         {
-            get { return _b; }
-            set
-            {
+            get {
+            
                 if (miara == UnitOfMeasure.meter)
                 {
-                    _b = Math.Round(value, 3);
+                    _b = Math.Round(_b, 3);
                 }
                 else if (miara == UnitOfMeasure.centimeter)
                 {
 
-                    _b = Math.Round((value * 100), 3);
+                    _b = Math.Round((_b / 100), 3);
                 }
                 else if (miara == UnitOfMeasure.milimeter)
                 {
 
-                    _b = Math.Round((value * 1000), 3);
+                    _b = Math.Round((_b / 1000), 3);
                 }
+                return _b;
             }
+            set
+            {
+                ;
+            }
+        
         }
         public double C
         {
-            get { return _c; }
-            set
+            get
             {
+
                 if (miara == UnitOfMeasure.meter)
                 {
-                    _c = Math.Round(value, 3);
+                    _c = Math.Round(_c, 3);
                 }
                 else if (miara == UnitOfMeasure.centimeter)
                 {
 
-                    _c = Math.Round((value * 100), 3);
+                    _c = Math.Round((_c / 100), 3);
                 }
                 else if (miara == UnitOfMeasure.milimeter)
                 {
 
-                    _c = Math.Round((value * 1000), 3);
+                    _c = Math.Round((_c / 1000), 3);
                 }
+                return _c;
             }
+            set
+            {
+                ;
+            }
+        
         }
 
 
@@ -81,6 +96,14 @@ namespace Pudełko
 
         public Pudełko(List<double> lista = default(List<double>)/*null?*/, UnitOfMeasure u = UnitOfMeasure.meter)
         {
+            if (lista == null)
+            {
+                lista = new List<double>();
+                lista.Add(10);
+                lista.Add(10);
+                lista.Add(10);
+                u = UnitOfMeasure.centimeter;
+            }
             foreach (double n in lista)
             {
                 //W przypadku próby utworzenia pudełka z którymkolwiek z parametrów niedodatnim, zgłaszany jest wyjątek ArgumentOutOfRangeException
@@ -93,14 +116,7 @@ namespace Pudełko
             }
             // Wszystkie parametry konstruktora są opcjonalne.
 
-            if (lista == null)
-            {
-                lista = new List<double>();
-                lista.Add(10);
-                lista.Add(10);
-                lista.Add(10);
-                u = UnitOfMeasure.centimeter;
-            }
+         
             //Jeśli podano mniej niż 3 wartości liczbowe, pozostałe przyjmuje się jako o wartości 10 cm, ale dla ustalonej jednostki miary.
             if (lista.Count < 3) //może być prościej ale nie wiem jak to kompetentnie zrobić/ bez błędu
             {
@@ -170,36 +186,54 @@ namespace Pudełko
         }
 
 
-//        Zapewnij reprezentację tekstową obiektu według formatu:
-//«liczba» «jednostka» × «liczba» «jednostka» × «liczba» «jednostka»
-//znak rozdzielający wymiary, to znak mnożenia × (Unicode: U+00D7, multiplication sign, times)
-//pomiędzy liczbami, nazwami jednostek miar i znakami × jest dokładnie jedna spacja
-//domyślne formatowanie liczb(przesłonięcie ToString()) w metrach, z dokładnością 3. miejsc po przecinku
-     public override string ToString()
-        {
-            return this.ToString("bez", CultureInfo.CurrentCulture);
-        }
+        //        Zapewnij reprezentację tekstową obiektu według formatu:
+        //«liczba» «jednostka» × «liczba» «jednostka» × «liczba» «jednostka»
+        //znak rozdzielający wymiary, to znak mnożenia × (Unicode: U+00D7, multiplication sign, times)
+        //pomiędzy liczbami, nazwami jednostek miar i znakami × jest dokładnie jedna spacja
+        //domyślne formatowanie liczb(przesłonięcie ToString()) w metrach, z dokładnością 3. miejsc po przecinku
+        //public override string ToString()
+        //{
+        //    return this.ToString("bez", CultureInfo.CurrentCulture);
+        //}
 
-        public string ToString(string format, IFormatProvider provider)
-        {
-            if (String.IsNullOrEmpty(format)) format = "bez";
-            if (provider == null) provider = CultureInfo.CurrentCulture;
+        //public string ToString(string format, IFormatProvider provider)
+        //{
+        //    if (String.IsNullOrEmpty(format)) format = "bez";
+        //    if (provider == null) provider = CultureInfo.CurrentCulture;
 
-            switch (format.ToUpperInvariant())
+        //    switch (format.ToUpperInvariant())
+        //    {
+        //        case "bez":
+        //            return A.ToString("N3") + "m " + "× " + B.ToString("N3") + "m" + " ×" + C.ToString("N3") + " m";
+        //        case "m":
+        //            return A.ToString("N3") + "m " + "× " + B.ToString("N3") + "m" + " ×" + C.ToString("N3") + " m";
+        //        case "cm":
+        //            return A.ToString("N1") + "cm " + "× " + B.ToString("N1") + "cm" + " ×" + C.ToString("N1") + " cm";
+        //        case "mm":
+        //            return A.ToString("N0") + "mm " + "× " + B.ToString("N0") + "mm" + " ×" + C.ToString("N0") + " mm";
+        //        default:
+        //            throw new FormatException();
+        //    }
+        //}
+        //Zaimplementuj property Objetosc zwracające objętość pudełka w m³. Wynik zaokrąglij(Math.Round) do 9. miejsc po przecinku.
+        public double Objętość
+        {
+            get
             {
-                case "bez":
-                    return A.ToString("N3") + "m " + "× " + B.ToString("N3") + "m" + " ×" + C.ToString("N3") + " m";
-                case "m":
-                    return A.ToString("N3") + "m " + "× " + B.ToString("N3") + "m" + " ×" + C.ToString("N3") + " m";
-                case "cm":
-                    return A.ToString("N1") + "cm " + "× " + B.ToString("N1") + "cm" + " ×" + C.ToString("N1") + " cm";
-                case "mm":
-                    return A.ToString("N0") + "mm " + "× " + B.ToString("N0") + "mm" + " ×" + C.ToString("N0") + " mm";
-                default:
-                    throw new FormatException(String.Format("{0} to zły format", format));
+                return Math.Round((A * B * C), 9);
             }
+            set {; }
         }
-
+        //Zaimplementuj property Pole zwracające pole powierzchni całkowitej pudełka(prostopadłościanu) w m². Wynik zaokrąglij(Math.Round) do 6. miejsc po przecinku.
+        public double Pole
+        {
+            get
+            {
+                return Math.Round(2 * (A * B + A * C + B * C), 6);
+            }
+            set {; }
+        
+        }
     }
-    }
+}
 

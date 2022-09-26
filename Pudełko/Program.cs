@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Pudełko
 {
@@ -6,7 +7,13 @@ namespace Pudełko
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            List<double> wkład = new List<double>(){ 3, 3, 2 };
+            Pudełko p = new Pudełko(wkład, UnitOfMeasure.centimeter);
+            var pp=p.A;
+           
+            Console.WriteLine(pp);
+            //Console.WriteLine(zz);
+
         }
     }
 }
