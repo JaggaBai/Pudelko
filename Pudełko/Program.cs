@@ -12,8 +12,10 @@ namespace Pudełko
             var pp=p.A;
            
             Console.WriteLine(pp);
-            string g = p.ToString("cm");
+            string g = p.ToString("mm");
             Console.WriteLine(g);
+           double z= p.Objętość;
+            Console.WriteLine("{0}", z);
 
         }
     }

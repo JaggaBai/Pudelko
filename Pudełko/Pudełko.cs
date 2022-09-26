@@ -204,9 +204,9 @@ namespace Pudełko
                 case "M":
                     return A.ToString("F3") + " m " + "× " + B.ToString("F3") + " m" + " × " + C.ToString("F3") + " m";
                 case "CM":
-                    return A.ToString("F1") + " cm " + "× " + B.ToString("F1") + " cm" + " × " + C.ToString("F1") + " cm";
+                    return (A*100).ToString("F1") + " cm " + "× " + (B*100).ToString("F1") + " cm" + " × " + (C*100).ToString("F1") + " cm";
                 case "MM":
-                    return A.ToString("F0") + " mm " + "× " + B.ToString("F0") + " mm" + " ×" + C.ToString("F0") + " mm";
+                    return (A*1000).ToString("F0") + " mm " + "× " + (B*1000).ToString("F0") + " mm" + " × " + (C*1000).ToString("F0") + " mm";
                 default:
                     throw new FormatException();
             }
@@ -218,7 +218,7 @@ namespace Pudełko
             {
                 return Math.Round((A * B * C), 9);
             }
-            set {; }
+            
         }
         //Zaimplementuj property Pole zwracające pole powierzchni całkowitej pudełka(prostopadłościanu) w m². Wynik zaokrąglij(Math.Round) do 6. miejsc po przecinku.
         public double Pole
@@ -227,7 +227,7 @@ namespace Pudełko
             {
                 return Math.Round(2 * (A * B + A * C + B * C), 6);
             }
-            set {; }
+           
         
         }
     }
